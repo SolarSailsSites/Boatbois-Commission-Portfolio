@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Boatboi's Commission Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 256x144 Downscaled Hardware Engine Canvas -->
+    <canvas id="saltFlatCanvas" title="Click anywhere to hide/show bio card"></canvas>
+
+    <!-- Interactive Glassmorphic Card Overlay -->
+    <div class="viewport-overlay" id="overlay">
+        <div class="profile-card">
+
+            <!-- CARD HEADER -->
+            <div class="card-header">
+                <div class="avatar-frame">
+                    <img src="https://i.imgur.com/AjQmX1q.jpeg" alt="Avatar">
+                </div>
+                <div class="username">Boat boi 🐦‍🔥</div>
+                <div class="tagline">First time doing comms lowk nervous ngl..</div>
+            </div>
+
+            <!-- TAB NAVIGATION -->
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-target="about">About</button>
+                <button class="tab-btn" data-target="tos">TOS</button>
+                <button class="tab-btn" data-target="price">Price</button>
+                <button class="tab-btn" data-target="preview">Preview</button>
+                <button class="tab-btn" data-target="reviews">Reviews</button>
+            </nav>
+
+            <!-- SCROLLABLE CONTENT AREA -->
+            <div class="card-scroll-body">
+
+                <!-- TAB 1: ABOUT -->
+                <section id="about" class="tab-pane active">
+                    <div>
+                        <div class="section-title">About Me</div>
+                        <div class="bio-text">
+                            Hi everyone! I'm a Computer Science student applying my web dev skills to code clean, optimized bio websites hosted on GitHub. My goal is to get 3 copies of Stardew Valley so my friends and I can play together! This is my first time running commissions,
+                            and I'm excited to finally share my skills, this is truly the first time I'll receive something for my work.
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-title">Links & Socials</div>
+                        <div class="links-container">
+                            <!-- LINK 1 -->
+                            <a href="https://discordapp.com/users/620554663598620702" class="bio-link" target="_blank">
+                                <span>👾 Discord</span>
+                                <span>→</span>
+                            </a>
+                            <!-- LINK 2 -->
+                            <a href="https://github.com/SolarSailsSites" class="bio-link" target="_blank">
+                                <span>📁 GitHub</span>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-title">Additional Info</div>
+                        <div class="bio-text" style="font-family: monospace; font-size: 0.8rem; color: #ffffff;">
+                            <ul class="info-list">
+                                <li><strong>Stardew Valley Copies Goal: [0/3]</strong></li>
+                                <li><strong>Timezone: Philippine Standard Time (PHT)</strong> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: TOS -->
+                <section id="tos" class="tab-pane">
+                    <div>
+                        <div class="section-title" style="font-size: 1.15rem; margin-bottom: 16px;">Terms of Service</div>
+
+                        <div style="display: flex; flex-direction: column; gap: 18px;">
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">TOS — WAIT TIME & DEALS</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li><strong>【DEAL 1】 $6.00 Preset Guarantee:</strong> Delivered within 24 hours (Philippine Timezone), if not delivered on time your preset is 100% free.</li>
+                                    <li><strong>【DEAL 2】 Style Swap Perk:</strong> Includes 3 Free Style Swaps between Ocean Sunset, Midnight Galaxy, and Flowering Meadows ($2.00 per swap after).</li>
+                                    <li><strong>Custom & Portfolio Wait Time:</strong> Delivered within 3 to 7 days depending on queue and complexity.</li>
+                                    <li><strong>Timestamp Rule:</strong> Start and delivery times are logged via screenshot to prevent stalling.</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">TOS — PAYMENTS & REFUNDS</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li><strong>Accepted Payments:</strong> GCash | Steam Giftcards | Gifted Steam Copies of Stardew Valley.</li>
+                                    <li><strong>Upfront Payment:</strong> Full payment is required upfront for the custom tier before development begins.</li>
+                                    <li><strong>Refund Policy:</strong> No refunds once it has been fully published and paid for.</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">TOS — REVISIONS & USAGE</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li><strong>Edits & Revisions:</strong> Minor text or link edits are free after delivery, though turnaround can range from minutes to a few days depending on my schedule. Major layout overhauls incur a small fee.</li>
+                                    <li><strong>Credits & Ownership:</strong> Please keep the all rights reserved license in the footer intact and do not resell the raw code.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: PRICE -->
+                <section id="price" class="tab-pane">
+                    <div>
+                        <div class="section-title" style="font-size: 1.15rem; margin-bottom: 16px;">Pricing & Commissions</div>
+
+                        <div style="display: flex; flex-direction: column; gap: 18px;">
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">PRICE — $6.00 BASIC BIO PRESET (₱375 or 1 Gifted Copy of Stardew Valley)</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li>Simple one-page glassmorphic "About Me" card featuring your profile picture, bio, and links, built to fit both phones and PCs properly.</li>
+                                    <li>Pick 1 smooth animated background (Midnight Galaxy, Ocean Sunset, or Flowering Meadows, shown in the Preview tab).</li>
+                                    <li>Includes <strong>3 Free Style Swaps</strong> and a <strong>24-hour delivery guarantee</strong> (Philippine Timezone).</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">PRICE — $8.00 MULTI-MENU PORTFOLIO OR ABOUT ME WITH ADJUSTMENTS ON THE CARD (₱470 or 1 Gifted Copy of Stardew Valley)</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li>A Carrd-style glassmorphic portfolio with separate tabs (<em>About</em>, <em>TOS</em>, <em>Prices</em>, <em>Gallery</em>, <em>Reviews</em>) that switch smoothly without cutting off text.</li>
+                                    <li>Uses 1 fixed background from the preset choices above, with customizable card colors and text for your commissions.</li>
+                                    <li>Clean layout with no forced platform watermarks, built to fit both phones and PCs properly.</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 style="color: #2ecc71; font-size: 0.95rem; font-weight: 700; margin-bottom: 6px;">PRICE — $20.00 FULLY CUSTOM SITE (₱1,250 or 2 Gifted Copies of Stardew Valley)</h3>
+                                <ul class="bio-text" style="padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li>Coded completely from scratch around your idea, including a brand-new background and a custom card layout made to fit both phones and PCs properly.</li>
+                                    <li>Takes 3 to 7 days to build properly and can include special animations like flipping TOS pages or a gallery that splits apart into 3 separate cards that scatter.</li>
+                                    <li>Includes custom tap and cursor trails with click effects that work on both phones and PCs.</li>
+                                    <li><em>Note: Since this is built from scratch, full payment and a clear idea are needed upfront before I start coding.</em></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: PREVIEW (Links directly to project) -->
+                <section id="preview" class="tab-pane">
+                    <div class="preview-grid">
+                        <div class="preview-item">
+                            <a href="https://solarsailssites.github.io/Preset1-OceanSunset/" class="preview-img-box" target="_blank">
+                                <img src="https://i.postimg.cc/C124gnvL/Template1.png" alt="Project 1">
+                            </a>
+                            <a href="https://solarsailssites.github.io/Preset1-OceanSunset/" class="preview-link-btn" target="_blank">Preset 1 - Ocean Sunset</a>
+                        </div>
+                        <div class="preview-item">
+                            <a href="https://solarsailssites.github.io/Preset2-MidnightGalaxy/" class="preview-img-box" target="_blank">
+                                <img src="https://i.postimg.cc/LXWVpgy4/Template2.png" alt="Project 2">
+                            </a>
+                            <a href="https://solarsailssites.github.io/Preset2-MidnightGalaxy/" class="preview-link-btn" target="_blank">Preset 2 - Midnight Galaxy</a>
+                        </div>
+                        <div class="preview-item">
+                            <a href="https://solarsailssites.github.io/Preset3-FloweringMeadows/" class="preview-img-box" target="_blank">
+                                <img src="https://i.postimg.cc/B6zC0Phn/Template3.png" alt="Project 3">
+                            </a>
+                            <a href="https://solarsailssites.github.io/Preset3-FloweringMeadows/" class="preview-link-btn" target="_blank">Preset 3 - Flowering Meadows</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: REVIEWS (Opens Lightbox Modal on Image Click) -->
+                <section id="reviews" class="tab-pane">
+                    <div class="preview-grid">
+                        <div class="preview-item single-item">
+                            <div class="preview-img-box review-lightbox-trigger">
+                                <img src="https://preview.redd.it/quero-achar-a-origem-dessa-imagem-v0-5s394jvzcduf1.jpeg?width=1080&crop=smart&auto=webp&s=e2ae9d0f47653f012835b4e55628516b5aedcbcd" alt="Review Image">
+                            </div>
+                            <div class="preview-link-btn">none yet</div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- COPYRIGHT FOOTER (Included in About, TOS, and Price tabs) -->
+            <div class="card-footer" id="cardFooter">
+                © <span id="current-year"></span> SolarSailsSites. All Rights Reserved.
+            </div>
+
+            <!-- IMAGE MODAL LIGHTBOX VIEWER -->
+            <div id="imageModal" class="image-modal">
+                <button class="modal-back-btn" onclick="closeImageModal()">← Back</button>
+                <div class="modal-img-container">
+                    <img id="expandedModalImg" src="" alt="Expanded View">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bottom Focus Toggle Hint -->
+    <div class="toggle-hint" id="hint">Click background to toggle view focus</div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
