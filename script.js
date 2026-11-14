@@ -1,3 +1,77 @@
+// --- 0. PIXELATED & DITHERED WHITE CIRCLE CLICK RIPPLE (z-index: 3, Zero index.html changes) ---
+if (!document.getElementById('pixelRippleStyles')) {
+    const styleSheet = document.createElement('style');
+    styleSheet.id = 'pixelRippleStyles';
+    styleSheet.innerHTML = `
+        @keyframes pixelBlockFade {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                /* As it reaches its max expansion vector, the individual squares scale down and fade out */
+                transform: translate(var(--dx), var(--dy)) scale(0.2);
+            }
+        }
+        .pixel-dither-dot {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            pointer-events: none;
+            z-index: 3; /* Sits cleanly above the glass card (z-index: 2) */
+            image-rendering: pixelated;
+            animation: pixelBlockFade 0.4s ease-out forwards;
+        }
+    `;
+    document.head.appendChild(styleSheet);
+}
+
+// Unified pointerdown listener handles clicks & mobile taps without double-firing
+window.addEventListener('pointerdown', (e) => {
+    const pixelSize = 4; // Matches the chunky pixel grid of your background
+    const snapX = Math.floor(e.clientX / pixelSize) * pixelSize;
+    const snapY = Math.floor(e.clientY / pixelSize) * pixelSize;
+
+    const numDots = 28; // Slightly denser dot count to close any gaps into a solid ring
+    const expandDist = 36; // Max expansion radius in pixels
+
+    for (let i = 0; i < numDots; i++) {
+        // Uniform circular arrangement (locking alternate distances to the exact same ring radius for a solid O shape)
+        const angle = (i / numDots) * Math.PI * 2;
+
+        const rawDx = Math.cos(angle) * expandDist;
+        const rawDy = Math.sin(angle) * expandDist;
+
+        const dx = Math.round(rawDx / pixelSize) * pixelSize;
+        const dy = Math.round(rawDy / pixelSize) * pixelSize;
+
+        // Initial small ring offset snapped to grid
+        const startDx = Math.round((Math.cos(angle) * 8) / pixelSize) * pixelSize;
+        const startDy = Math.round((Math.sin(angle) * 8) / pixelSize) * pixelSize;
+
+        const dot = document.createElement('div');
+        dot.className = 'pixel-dither-dot';
+        dot.style.left = `${snapX + startDx}px`;
+        dot.style.top = `${snapY + startDy}px`;
+
+        // Checkerboard dither shading on alternate pixels for retro texture
+        if (i % 2 === 0) {
+            dot.style.backgroundColor = '#dce8f5'; // Subtle cool white dither tint
+        }
+
+        dot.style.setProperty('--dx', `${dx}px`);
+        dot.style.setProperty('--dy', `${dy}px`);
+
+        document.body.appendChild(dot);
+
+        setTimeout(() => {
+            dot.remove();
+        }, 400);
+    }
+});
+
 // --- 1. TAB SWITCHING & COPYRIGHT FOOTER MANAGEMENT ---
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabPanes = document.querySelectorAll('.tab-pane');
@@ -535,3 +609,108 @@ document.querySelectorAll('#reviews img').forEach(img => {
 
 // Automatically update copyright year
 document.getElementById('current-year').innerText = new Date().getFullYear();
+
+// --- 5. CENTERED, SEMI-TRANSPARENT PIXELATED CURSOR & TOUCH DRAG TRAIL ---
+if (!document.getElementById('pixelTrailStyles')) {
+    const trailStyleSheet = document.createElement('style');
+    trailStyleSheet.id = 'pixelTrailStyles';
+    trailStyleSheet.innerHTML = `
+        @keyframes pixelTrailFade {
+            0% {
+                opacity: 0.5; /* 50% semi-transparent so it never obscures text */
+                transform: translate(-50%, -50%) scale(var(--trail-scale));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2);
+            }
+        }
+        .pixel-trail-dot {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            pointer-events: none;
+            z-index: 3; /* Sits cleanly above glass card (z-index: 2) */
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            animation: pixelTrailFade 0.3s steps(4, end) forwards;
+        }
+    `;
+    document.head.appendChild(trailStyleSheet);
+}
+
+let lastTrailX = null;
+let lastTrailY = null;
+let lastTrailTime = performance.now();
+let currentTrailScale = 1.0;
+
+window.addEventListener('pointermove', (e) => {
+    const now = performance.now();
+    const dt = now - lastTrailTime;
+    lastTrailTime = now;
+
+    // Offset from the cursor tip to the visual center of the mouse arrow (~8px right and down)
+    const cursorOffsetX = 8;
+    const cursorOffsetY = 8;
+
+    const currentX = e.clientX + cursorOffsetX;
+    const currentY = e.clientY + cursorOffsetY;
+
+    if (lastTrailX === null || lastTrailY === null) {
+        lastTrailX = currentX;
+        lastTrailY = currentY;
+        return;
+    }
+
+    // Calculate distance and speed for dynamic scaling
+    const dx = currentX - lastTrailX;
+    const dy = currentY - lastTrailY;
+    const dist = Math.hypot(dx, dy);
+
+    const speed = dist / (dt || 1);
+    currentTrailScale = Math.min(1.6, Math.max(0.8, 0.8 + speed * 0.15));
+
+    // Linear interpolation to fill every 4px step solidly with zero gaps
+    const pixelSize = 4;
+    const steps = Math.ceil(dist / pixelSize);
+
+    for (let i = 0; i <= steps; i++) {
+        const t = steps === 0 ? 0 : i / steps;
+        const interpX = lastTrailX + dx * t;
+        const interpY = lastTrailY + dy * t;
+
+        const snapX = Math.floor(interpX / pixelSize) * pixelSize;
+        const snapY = Math.floor(interpY / pixelSize) * pixelSize;
+
+        const dot = document.createElement('div');
+        dot.className = 'pixel-trail-dot';
+        dot.style.left = `${snapX}px`;
+        dot.style.top = `${snapY}px`;
+        dot.style.setProperty('--trail-scale', currentTrailScale);
+
+        // Retro dither tint on alternate blocks
+        if (i % 2 === 0) {
+            dot.style.backgroundColor = '#dce8f5';
+        }
+
+        document.body.appendChild(dot);
+
+        // Clean up DOM element automatically after animation finishes
+        setTimeout(() => {
+            dot.remove();
+        }, 300);
+    }
+
+    lastTrailX = currentX;
+    lastTrailY = currentY;
+});
+
+window.addEventListener('pointerup', () => {
+    lastTrailX = null;
+    lastTrailY = null;
+});
+window.addEventListener('pointercancel', () => {
+    lastTrailX = null;
+    lastTrailY = null;
+});
