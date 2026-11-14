@@ -610,14 +610,14 @@ document.querySelectorAll('#reviews img').forEach(img => {
 // Automatically update copyright year
 document.getElementById('current-year').innerText = new Date().getFullYear();
 
-// --- 5. CENTERED, SEMI-TRANSPARENT PIXELATED CURSOR & TOUCH DRAG TRAIL ---
+// --- 5. ROBUST MOBILE-COMPATIBLE PIXELATED TOUCH & CURSOR TRAIL ---
 if (!document.getElementById('pixelTrailStyles')) {
     const trailStyleSheet = document.createElement('style');
     trailStyleSheet.id = 'pixelTrailStyles';
     trailStyleSheet.innerHTML = `
         @keyframes pixelTrailFade {
             0% {
-                opacity: 0.5; /* 50% semi-transparent so it never obscures text */
+                opacity: 0.5; /* 50% semi-transparent so it never obscures text[cite: 3] */
                 transform: translate(-50%, -50%) scale(var(--trail-scale));
             }
             100% {
@@ -631,7 +631,7 @@ if (!document.getElementById('pixelTrailStyles')) {
             height: 4px;
             background-color: #ffffff;
             pointer-events: none;
-            z-index: 3; /* Sits cleanly above glass card (z-index: 2) */
+            z-index: 3; /* Sits cleanly above glass card (z-index: 2)[cite: 3] */
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             animation: pixelTrailFade 0.3s steps(4, end) forwards;
@@ -644,18 +644,27 @@ let lastTrailX = null;
 let lastTrailY = null;
 let lastTrailTime = performance.now();
 let currentTrailScale = 1.0;
+let isTrailActive = false;
 
-window.addEventListener('pointermove', (e) => {
+const cursorOffsetX = 8;
+const cursorOffsetY = 8;
+
+function handleTrailStart(clientX, clientY) {
+    isTrailActive = true;
+    lastTrailX = clientX + cursorOffsetX;
+    lastTrailY = clientY + cursorOffsetY;
+    lastTrailTime = performance.now();
+}
+
+function handleTrailMove(clientX, clientY) {
+    if (!isTrailActive) return;
+
     const now = performance.now();
     const dt = now - lastTrailTime;
     lastTrailTime = now;
 
-    // Offset from the cursor tip to the visual center of the mouse arrow (~8px right and down)
-    const cursorOffsetX = 8;
-    const cursorOffsetY = 8;
-
-    const currentX = e.clientX + cursorOffsetX;
-    const currentY = e.clientY + cursorOffsetY;
+    const currentX = clientX + cursorOffsetX;
+    const currentY = clientY + cursorOffsetY;
 
     if (lastTrailX === null || lastTrailY === null) {
         lastTrailX = currentX;
@@ -663,7 +672,6 @@ window.addEventListener('pointermove', (e) => {
         return;
     }
 
-    // Calculate distance and speed for dynamic scaling
     const dx = currentX - lastTrailX;
     const dy = currentY - lastTrailY;
     const dist = Math.hypot(dx, dy);
@@ -671,7 +679,6 @@ window.addEventListener('pointermove', (e) => {
     const speed = dist / (dt || 1);
     currentTrailScale = Math.min(1.6, Math.max(0.8, 0.8 + speed * 0.15));
 
-    // Linear interpolation to fill every 4px step solidly with zero gaps
     const pixelSize = 4;
     const steps = Math.ceil(dist / pixelSize);
 
@@ -689,14 +696,12 @@ window.addEventListener('pointermove', (e) => {
         dot.style.top = `${snapY}px`;
         dot.style.setProperty('--trail-scale', currentTrailScale);
 
-        // Retro dither tint on alternate blocks
         if (i % 2 === 0) {
             dot.style.backgroundColor = '#dce8f5';
         }
 
         document.body.appendChild(dot);
 
-        // Clean up DOM element automatically after animation finishes
         setTimeout(() => {
             dot.remove();
         }, 300);
@@ -704,13 +709,39 @@ window.addEventListener('pointermove', (e) => {
 
     lastTrailX = currentX;
     lastTrailY = currentY;
-});
+}
 
-window.addEventListener('pointerup', () => {
+function handleTrailEnd() {
+    isTrailActive = false;
     lastTrailX = null;
     lastTrailY = null;
+}
+
+// 1. Mouse Events
+window.addEventListener('mousedown', (e) => handleTrailStart(e.clientX, e.clientY));
+window.addEventListener('mousemove', (e) => {
+    // Mouse always trails when moving, or drags when clicked
+    if (!isTrailActive) {
+        isTrailActive = true;
+        lastTrailX = e.clientX + cursorOffsetX;
+        lastTrailY = e.clientY + cursorOffsetY;
+    }
+    handleTrailMove(e.clientX, e.clientY);
 });
-window.addEventListener('pointercancel', () => {
-    lastTrailX = null;
-    lastTrailY = null;
-});
+window.addEventListener('mouseup', handleTrailEnd);
+
+// 2. Mobile Touch Events (using { passive: false } so preventDefault stops page scrolls from stealing the touch)
+window.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+        handleTrailStart(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, { passive: false });
+
+window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        handleTrailMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, { passive: false });
+
+window.addEventListener('touchend', handleTrailEnd);
+window.addEventListener('touchcancel', handleTrailEnd);
