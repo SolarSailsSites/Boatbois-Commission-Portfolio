@@ -48,7 +48,9 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 16px;
+    padding-bottom: 50px;
+    /* Leave space for bottom toggle hint */
     pointer-events: auto;
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -89,20 +91,19 @@ canvas {
 /* CARD HEADER */
 
 .card-header {
-    padding: 24px 24px 14px 24px;
+    padding: 20px 20px 12px 20px;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
 
 .avatar-frame {
-    width: 76px;
-    height: 76px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin: 0 auto 10px auto;
+    margin: 0 auto 8px auto;
     background: #2ecc71;
-    /* Brighter accent green */
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     position: relative;
@@ -116,7 +117,7 @@ canvas {
 
 .username {
     color: #ffffff;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     margin-bottom: 2px;
@@ -124,19 +125,18 @@ canvas {
 
 .tagline {
     color: #2ecc71;
-    /* Brighter accent green */
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 600;
 }
 
 
-/* TAB NAVIGATION: Auto-scaling across all devices */
+/* TAB NAVIGATION: Responsive auto-scaling font sizes & tight padding for mobile */
 
 .nav-tabs {
     display: flex;
-    gap: 4px;
-    padding: 12px 16px;
+    gap: 3px;
+    padding: 10px 12px;
     background: rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
@@ -149,9 +149,10 @@ canvas {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.7rem;
+    font-size: 0.58rem;
+    /* Scaled down for mobile viewports so "Preview" & "Reviews" fit cleanly */
     font-weight: 600;
-    padding: 8px 2px;
+    padding: 8px 1px;
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
@@ -168,7 +169,6 @@ canvas {
 
 .tab-btn.active {
     background: rgba(46, 204, 113, 0.9);
-    /* Brighter active tab green */
     border-color: #2ecc71;
     color: #ffffff;
     box-shadow: 0 2px 10px rgba(46, 204, 113, 0.4);
@@ -178,7 +178,8 @@ canvas {
 /* INNER SCROLLABLE CONTENT BODY */
 
 .card-scroll-body {
-    padding: 20px 24px;
+    padding: 20px 20px 30px 20px;
+    /* Extra bottom padding so content never hides behind footer */
     overflow-y: auto;
     flex-grow: 1;
     display: flex;
@@ -227,7 +228,7 @@ canvas {
 
 .bio-text {
     color: #d1d5db;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     line-height: 1.5;
 }
 
@@ -301,9 +302,6 @@ canvas {
     transform: scale(1.05);
 }
 
-
-/* Full-width block display so the green highlight covers the entire button box */
-
 .preview-link-btn {
     display: block;
     width: 100%;
@@ -320,9 +318,6 @@ canvas {
 a.preview-link-btn:hover {
     background: rgba(46, 204, 113, 0.9);
 }
-
-
-/* Review Lightbox trigger styling */
 
 .review-lightbox-trigger {
     cursor: pointer;
@@ -399,7 +394,7 @@ a.preview-link-btn:hover {
 }
 
 
-/* RESPONSIVE PC STYLING: Horizontal layout for preview */
+/* RESPONSIVE PC STYLING: Larger screens get more breathing room for tab buttons */
 
 @media (min-width: 768px) {
     .tab-btn {
@@ -420,24 +415,33 @@ a.preview-link-btn:hover {
 }
 
 
-/* TOGGLE HINT BADGE */
+/* TOGGLE HINT BADGE: Dynamically sized and smaller on narrow vertical screens, clearing footer */
 
 .toggle-hint {
     position: fixed;
-    bottom: 16px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-family: monospace;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 5px 12px;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(4px);
     z-index: 3;
     pointer-events: none;
+    white-space: nowrap;
     transition: opacity 0.5s ease;
+}
+
+@media (min-width: 768px) {
+    .toggle-hint {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        bottom: 16px;
+    }
 }
 
 .toggle-hint.hidden {
@@ -448,9 +452,9 @@ a.preview-link-btn:hover {
 /* CARD FOOTER */
 
 .card-footer {
-    padding: 12px 24px 16px 24px;
+    padding: 12px 20px 14px 20px;
     text-align: center;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: #94a3b8;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
