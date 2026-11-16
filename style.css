@@ -50,15 +50,11 @@ canvas {
     align-items: center;
     padding: 16px;
     padding-bottom: 50px;
-    /* Leave space for bottom toggle hint */
     pointer-events: auto;
     opacity: 1;
     transform: translateY(0) scale(1);
     transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
-/* Move completely off-screen and disable pointer events when hidden */
 
 .viewport-overlay.hidden {
     opacity: 0;
@@ -131,7 +127,7 @@ canvas {
 }
 
 
-/* TAB NAVIGATION: Responsive auto-scaling font sizes & tight padding for mobile */
+/* TAB NAVIGATION */
 
 .nav-tabs {
     display: flex;
@@ -150,7 +146,6 @@ canvas {
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.58rem;
-    /* Scaled down for mobile viewports so "Preview" & "Reviews" fit cleanly */
     font-weight: 600;
     padding: 8px 1px;
     border-radius: 8px;
@@ -179,7 +174,6 @@ canvas {
 
 .card-scroll-body {
     padding: 20px 20px 30px 20px;
-    /* Extra bottom padding so content never hides behind footer */
     overflow-y: auto;
     flex-grow: 1;
     display: flex;
@@ -265,12 +259,12 @@ canvas {
 }
 
 
-/* PREVIEW & REVIEWS SECTION CARDS */
+/* PREVIEW & REVIEWS SECTION CARDS (Grid Layout) */
 
 .preview-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
 .preview-item {
@@ -280,15 +274,26 @@ canvas {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.preview-card-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
 }
 
 .preview-img-box {
     width: 100%;
-    height: 140px;
+    height: 120px;
     background: rgba(0, 0, 0, 0.4);
     overflow: hidden;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     display: block;
+    flex-shrink: 0;
 }
 
 .preview-img-box img {
@@ -298,25 +303,39 @@ canvas {
     transition: transform 0.3s ease;
 }
 
-.preview-item:hover .preview-img-box img {
+
+/* Hover Zoom Effect for Preview Links & Review Trigger Cards */
+
+.preview-card-link:hover .preview-img-box img,
+.preview-item:hover .review-lightbox-trigger img {
     transform: scale(1.05);
 }
 
 .preview-link-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    padding: 12px 16px;
+    flex-grow: 1;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 8px 12px;
     text-align: center;
     color: #ffffff;
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     font-weight: 600;
     background: rgba(255, 255, 255, 0.05);
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-a.preview-link-btn:hover {
+
+/* Green Highlight on Hover for Both Preview Cards and Review Cards */
+
+.preview-card-link:hover .preview-link-btn,
+.preview-item:hover .preview-link-btn {
     background: rgba(46, 204, 113, 0.9);
+    color: #ffffff;
 }
 
 .review-lightbox-trigger {
@@ -394,7 +413,7 @@ a.preview-link-btn:hover {
 }
 
 
-/* RESPONSIVE PC STYLING: Larger screens get more breathing room for tab buttons */
+/* RESPONSIVE PC STYLING: Force 3 Items Per Row for Preview & Reviews */
 
 @media (min-width: 768px) {
     .tab-btn {
@@ -402,20 +421,15 @@ a.preview-link-btn:hover {
         padding: 8px 12px;
     }
     .preview-grid {
-        flex-direction: row;
-    }
-    .preview-item {
-        flex: 1;
+        grid-template-columns: repeat(3, 1fr);
     }
     .preview-item.single-item {
-        max-width: 320px;
-        margin: 0 auto;
-        width: 100%;
+        max-width: none;
     }
 }
 
 
-/* TOGGLE HINT BADGE: Dynamically sized and smaller on narrow vertical screens, clearing footer */
+/* TOGGLE HINT BADGE */
 
 .toggle-hint {
     position: fixed;
